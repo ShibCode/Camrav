@@ -1,9 +1,6 @@
-import { connectDB } from "../../middleware/mongoose";
 import Product from "../../models/Product";
 
 export default async function handler(req, res) {
-  await connectDB();
-
   if (req.method === "POST") {
     const { brand, name, desc, image, category, sizes, price } = req.body;
 
@@ -21,7 +18,9 @@ export default async function handler(req, res) {
     console.log("asd");
 
     await newProduct.save();
+
+    return res.status(200).json({ message: "Successfully added the product" });
   }
 
-  res.status(200).json("Successfully added the product");
+  return res.status(400).json({ error: "This method is not allowed" });
 }

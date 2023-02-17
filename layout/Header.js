@@ -4,20 +4,29 @@ import Link from "next/link";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { faShoppingCart, faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faShoppingCart,
+  faCaretDown,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
-import Cart from "../components/Cart";
+import { useLoggedIn } from "../context/LoggedIn";
+
+import AccountDropDown from "../components/AccountDropDown";
+import CartMenu from "../components/CartMenu";
 
 const Header = () => {
   const [cartOpen, setCartOpen] = useState(false);
 
+  const { loggedIn } = useLoggedIn();
+
   return (
     <>
-      <header className="text-gray-600 body-font relative flex-column md:flex-row bg-blue-100">
-        <div className="container mx-auto flex flex-wrap md:pb-5 p-5 flex-row items-center justify-between">
+      <header className="text-gray-600 body-font relative flex-column lg:flex-row bg-blue-100">
+        <div className="container mx-auto flex flex-wrap lg:pb-5 p-5 flex-row items-center justify-between gap-4">
           <Link
             href="/"
-            className="flex title-font font-medium items-center text-gray-900 md:mb-0"
+            className="flex title-font font-medium items-center text-gray-900 lg:mb-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -34,16 +43,44 @@ const Header = () => {
             <span className="ml-3 text-xl">Camrav</span>
           </Link>
 
-          <FontAwesomeIcon
-            icon={faShoppingCart}
-            className="text-2xl cursor-pointer"
-            onClick={() => setCartOpen(true)}
-          />
+          <div className="flex gap-4 items-center">
+            {loggedIn === true && (
+              <div className="relative">
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className="account-icon text-xl cursor-pointer"
+                />
+                <AccountDropDown />
+              </div>
+            )}
+            {loggedIn === false && (
+              <div className="flex gap-3">
+                <Link
+                  href="/signin"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/signup"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
 
-          <Cart cartOpen={cartOpen} setCartOpen={setCartOpen} />
+            <FontAwesomeIcon
+              icon={faShoppingCart}
+              className="text-2xl cursor-pointer"
+              onClick={() => setCartOpen(true)}
+            />
+          </div>
+
+          <CartMenu cartOpen={cartOpen} setCartOpen={setCartOpen} />
         </div>
 
-        <div className="mx-auto p-5 pt-0 md:p-0 w-full container md:w-96 lg:w-[36rem] md:absolute md:top-1/2 md:left-1/2 md:translate-x-[-50%] md:translate-y-[-50%]">
+        <div className="mx-auto p-5 pt-0 lg:p-0 w-full container lg:w-96 xl:w-[36rem] lg:absolute lg:top-1/2 lg:left-1/2 lg:translate-x-[-50%] lg:translate-y-[-50%]">
           <div className="input-group relative flex items-stretch w-full gap-2">
             <input
               type="search"
@@ -82,7 +119,7 @@ const Header = () => {
         </Link>
         <div className="product-link hover:text-gray-900 relative py-2 cursor-pointer">
           Products <FontAwesomeIcon icon={faCaretDown} />
-          <div className="product-dropdown absolute right-1/2 translate-x-1/2 flex-col items-center text-[#808080] py-2 px-12 bg-white top-10">
+          <div className="z-50 product-dropdown absolute right-1/2 translate-x-1/2 flex-col items-center text-[#808080] py-2 px-12 bg-white top-10">
             <Link
               href="/products/tshirts"
               className="py-2 hover:text-black transition-colors"

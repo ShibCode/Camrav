@@ -6,12 +6,10 @@ import Products from "../../components/Products";
 import Product from "../../models/Product";
 
 const hoodies = ({ products_hoodies }) => {
-  const [products, setProducts] = useState(JSON.parse(products_hoodies));
-
   return (
     <div className="flex">
       <Filters />
-      <Products category="Hoodies" products={products} />
+      <Products productsString={products_hoodies} />
     </div>
   );
 };

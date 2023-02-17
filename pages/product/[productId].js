@@ -8,24 +8,26 @@ import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 
 import { CART_ACTIONS } from "../../context/Cart";
 
-import { useCartDispatch } from "../../context/Cart";
+import { useCart } from "../../context/Cart";
 
 const productpage = ({ fetchedProduct }) => {
-  const [product, setProduct] = useState(JSON.parse(fetchedProduct));
+  const product = JSON.parse(fetchedProduct);
 
   const [selectedSize, setSelectedSize] = useState(
     Object.keys(product.sizes)[0]
   );
   const [quantity, setQuantity] = useState(1);
 
-  const dispatch = useCartDispatch();
+  const { dispatch } = useCart();
 
   function addToCart() {
     const cart = {
       _id: product._id,
+      brand: product.brand,
       name: product.name,
       image: product.image,
       price: product.price,
+      category: product.category,
       selectedSize: selectedSize,
       quantity: quantity,
       availableQty: product.sizes[selectedSize].availableQty,
@@ -124,7 +126,7 @@ const productpage = ({ fetchedProduct }) => {
             </div>
             <div className="flex">
               <span className="title-font font-medium text-2xl text-gray-900">
-                Rs {product.price}
+                Rs {product.price.toLocaleString()}
               </span>
               <button
                 className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"

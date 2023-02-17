@@ -1,17 +1,13 @@
-import { useState } from "react";
-
 import Filters from "../../components/filters";
 import Products from "../../components/Products";
 
 import Product from "../../models/Product";
 
 const tshirts = ({ products_tshirts }) => {
-  const [products, setProducts] = useState(JSON.parse(products_tshirts));
-
   return (
     <div className="flex">
       <Filters />
-      <Products category="T-Shirts" products={products} />
+      <Products productsString={products_tshirts} />
     </div>
   );
 };
